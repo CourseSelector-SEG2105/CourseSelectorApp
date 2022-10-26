@@ -17,13 +17,10 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     public UserDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        System.out.println("Constructor");
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
-        System.out.println("On create");
 
         String create_cmd = "CREATE TABLE " + TABLE_NAME +
                 "(" + COLUMN_ID + " INTEGER PRIMARY KEY, " +
