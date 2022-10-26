@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Course Selector</string>
+    <string name="username">Username</string>
+    <string name="usernameField">Enter Username</string>
+    <string name="password">Password</string>
+    <string name="button">Button</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="instructor_account">Instructor Account (For Signup)</string>
+    <string name="welcome">Welcome!</string>
+</resources>
