@@ -9,4 +9,9 @@
     <string name="enter_username">Enter Username</string>
     <string name="instructor_account">Instructor Account (For Signup)</string>
     <string name="welcome">Welcome!</string>
+    <string name="delete_course">Delete course</string>
+    <string name="add_course">Add course</string>
+    <string name="add_user">Add user</string>
+    <string name="delete_user">Delete user</string>
+    <string name="edit_course">Edit course</string>
 </resources>

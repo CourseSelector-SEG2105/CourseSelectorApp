@@ -81,11 +81,17 @@ public class MainActivity extends AppCompatActivity {
         try {
             userPassword = userDatabase.getPassword(usernameString);
 
-            if(userPassword.equals(password.getText().toString())) {
+            if(userPassword.equals(password.getText().toString()) && !usernameString.equals("admin")) {
                 Toast.makeText(MainActivity.this, "Login", Toast.LENGTH_SHORT).show();
                 userRole = userDatabase.getRole(usernameString);
-
                 Intent intent = new Intent(MainActivity.this, LoginScreen.class);
+                intent.putExtra("username", usernameString);
+                intent.putExtra("role", userRole);
+                startActivity(intent);
+            } else if(userPassword.equals(password.getText().toString())){
+                Toast.makeText(MainActivity.this, "Login", Toast.LENGTH_SHORT).show();
+                userRole = userDatabase.getRole(usernameString);
+                Intent intent = new Intent(MainActivity.this, AdminLoginScreen.class);
                 intent.putExtra("username", usernameString);
                 intent.putExtra("role", userRole);
                 startActivity(intent);

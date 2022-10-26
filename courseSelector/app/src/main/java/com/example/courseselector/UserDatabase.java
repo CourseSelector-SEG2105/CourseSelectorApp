@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class UserDatabase extends SQLiteOpenHelper {
     private static final String TABLE_NAME      = "users";
@@ -14,6 +17,8 @@ public class UserDatabase extends SQLiteOpenHelper {
     private static final String COLUMN_ROLE     = "role";
     private static final String DATABASE_NAME   = "users.db";
     private static final int DATABASE_VERSION   = 1;
+    private static ArrayList<String> students;
+    private static ArrayList<String> instructors;
 
     public UserDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -90,4 +95,16 @@ public class UserDatabase extends SQLiteOpenHelper {
     public boolean userExists(String username) {
         return this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USERNAME + " = '" + username + "'", null).getCount() != 0;
     }
+//
+//    public void viewStudents(){
+//        students.clear();
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery("SELECT " + COLUMN_USERNAME + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ROLE + " = '" + "student" + "'", null);
+//        cursor.moveToNext();
+//        while (cursor.moveToNext()) {
+//            students.add(cursor.getString(1));
+//        }
+
+//
+//    }
 }
