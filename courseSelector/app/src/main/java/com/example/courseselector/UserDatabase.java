@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 
 public class UserDatabase extends SQLiteOpenHelper {
@@ -17,8 +19,8 @@ public class UserDatabase extends SQLiteOpenHelper {
     private static final String COLUMN_ROLE     = "role";
     private static final String DATABASE_NAME   = "users.db";
     private static final int DATABASE_VERSION   = 1;
-    private static ArrayList<String> students;
-    private static ArrayList<String> instructors;
+
+
 
     public UserDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -95,16 +97,38 @@ public class UserDatabase extends SQLiteOpenHelper {
     public boolean userExists(String username) {
         return this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USERNAME + " = '" + username + "'", null).getCount() != 0;
     }
-//
-//    public void viewStudents(){
-//        students.clear();
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery("SELECT " + COLUMN_USERNAME + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ROLE + " = '" + "student" + "'", null);
-//        cursor.moveToNext();
-//        while (cursor.moveToNext()) {
-//            students.add(cursor.getString(1));
-//        }
 
+    public void deleteUser(String username) throws UserDoesNotExistException{
+        if (!userExists(username)){
+            throw new UserDoesNotExistException("User does not exist");
+        }
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_NAME, COLUMN_USERNAME+"=?",new String[]{username});
+        database.close();
+    }
+
+//    public ArrayList<User> getAllUsers(){
+//        String query = "SELECT * FROM "+TABLE_NAME;
+//        SQLiteDatabase database = getWritableDatabase();
+//        Cursor cursor = database.rawQuery(query,null);
+//        ArrayList<User> listOfAllUsers=new ArrayList<User>();
 //
+//        while(cursor.moveToNext()){
+//            User row=new User(cursor.getString(0),cursor.getString(1));
+//            listOfAllUsers.add(row);
+//        }
+//        cursor.close();
+//        database.close();
+//        return listOfAllUsers;
 //    }
-}
+
+    public Cursor getUserData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME;
+        return db.rawQuery(query, null); // returns "cursor" all products from the table
+    }
+
+
+    }
+
+

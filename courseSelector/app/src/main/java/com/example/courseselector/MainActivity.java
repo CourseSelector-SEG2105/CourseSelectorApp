@@ -16,7 +16,8 @@ public class MainActivity extends AppCompatActivity {
     EditText username, password;
     CheckBox instructorCheckbox;
 
-    UserDatabase userDatabase;
+    static UserDatabase userDatabase;
+    static CourseDatabase courseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         instructorCheckbox = findViewById(R.id.instructorAccCheck);
 
         userDatabase = new UserDatabase(this);
+        courseDatabase = new CourseDatabase(this);
 
         User adminUser = new User("admin", "admin123", User.ADMIN_ROLE);
 
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("username", usernameString);
                 intent.putExtra("role", userRole);
                 startActivity(intent);
-            } else if(userPassword.equals(password.getText().toString())){
+            } else if(userPassword.equals(password.getText().toString())) {
                 Toast.makeText(MainActivity.this, "Login", Toast.LENGTH_SHORT).show();
                 userRole = userDatabase.getRole(usernameString);
                 Intent intent = new Intent(MainActivity.this, AdminLoginScreen.class);

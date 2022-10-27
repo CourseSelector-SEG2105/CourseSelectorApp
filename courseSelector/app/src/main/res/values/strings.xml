@@ -14,4 +14,5 @@
     <string name="add_user">Add user</string>
     <string name="delete_user">Delete user</string>
     <string name="edit_course">Edit course</string>
+    <string name="instructor_user">Instructor user</string>
 </resources>
