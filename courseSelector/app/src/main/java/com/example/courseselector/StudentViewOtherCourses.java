@@ -70,6 +70,8 @@ public class StudentViewOtherCourses extends AppCompatActivity {
                     Toast.makeText(this, "There is a time conflict with that course", Toast.LENGTH_SHORT).show();
                 } catch(StudentAlreadyEnrolled e){
                     Toast.makeText(this, "Student already enrolled in this course", Toast.LENGTH_SHORT).show();
+                } catch(IndexOutOfBoundsException e) {
+                    Toast.makeText(this, "Maximum capacity reached", Toast.LENGTH_SHORT).show();
                 }
 
             } else if (courseName.getText().toString().matches("")) {
@@ -82,6 +84,8 @@ public class StudentViewOtherCourses extends AppCompatActivity {
                     Toast.makeText(this, "There is a time conflict with that course", Toast.LENGTH_SHORT).show();
                 } catch(StudentAlreadyEnrolled e){
                     Toast.makeText(this, "Student already enrolled in this course", Toast.LENGTH_SHORT).show();
+                } catch(IndexOutOfBoundsException e) {
+                    Toast.makeText(this, "Maximum capacity reached", Toast.LENGTH_SHORT).show();
                 }
             }else{
                 Toast.makeText(this, "Error; please enter course name or code", Toast.LENGTH_SHORT).show();

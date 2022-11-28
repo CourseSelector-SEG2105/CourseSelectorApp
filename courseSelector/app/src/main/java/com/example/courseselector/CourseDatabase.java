@@ -189,15 +189,60 @@ public class CourseDatabase extends SQLiteOpenHelper {
         database.close();
     }
 
-    public void instructorEditCourse(String courseCode, String courseDesc, String courseDay, String courseStartTime, String courseEndTime, int courseCapacity) throws CourseDoesNotExistException, NumberFormatException{
+    public int getCapacityFromName(String courseName) {
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT " + COURSE_CAPACITY + " FROM " + TABLE_NAME +" WHERE " + COURSE_NAME + " = '" + courseName + "'", null);
+
+        if(cursor.getCount() == 0) {
+            return -1;
+        }
+
+        cursor.moveToNext();
+
+        int returnInt = cursor.getInt(0);
+        cursor.close();
+        return returnInt;
+    }
+
+    public int getCapacityFromCode(String courseCode) {
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT " + COURSE_CAPACITY + " FROM " + TABLE_NAME +" WHERE " + COURSE_CODE + " = '" + courseCode + "'", null);
+
+        if(cursor.getCount() == 0) {
+            return -1;
+        }
+
+        cursor.moveToNext();
+
+        int returnInt = cursor.getInt(0);
+        cursor.close();
+        return returnInt;
+    }
+
+    public int getOccupancyFromName(String courseName) {
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME +" WHERE " + COURSE_NAME + " = '" + courseName + "'", null);
+        int occupancy = cursor.getCount();
+        cursor.close();
+        return occupancy;
+    }
+
+
+    public int getOccupancyFromCode(String courseCode) {
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME +" WHERE " + COURSE_CODE + " = '" + courseCode + "'", null);
+        int occupancy = cursor.getCount();
+        cursor.close();
+        return occupancy;
+    }
+
+    public void instructorEditCourse(String courseCode, String courseDesc, String courseDay, String courseStartTime, String courseEndTime, int courseCapacity) throws CourseDoesNotExistException, NumberFormatException, Exception{
         if (!courseExists2(courseCode)){
             throw new CourseDoesNotExistException("Course does not exist");
         }
 
+        int currentCapacity = this.getCapacityFromCode(courseCode);
+
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues updatedCourse= new ContentValues();
 
-        if(courseDesc.length() >0){
+        if(courseDesc.length() > 0){
             updatedCourse.put(COURSE_DESCRIPTION, courseDesc);
         }
 
@@ -215,6 +260,10 @@ public class CourseDatabase extends SQLiteOpenHelper {
 
         if(courseCapacity > 0){
             updatedCourse.put(COURSE_CAPACITY, courseCapacity);
+        } else {
+            if(currentCapacity == -1) {
+                throw new Exception();
+            }
         }
 
         database.update(TABLE_NAME,updatedCourse,COURSE_CODE+"=?", new String[]{courseCode});

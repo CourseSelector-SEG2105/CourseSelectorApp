@@ -99,6 +99,13 @@ public class StudentCourseDatabase extends SQLiteOpenHelper {
             throw new StudentAlreadyEnrolled("Error");
         }
 
+        int occupancy = courseDatabase.getOccupancyFromCode(courseCode);
+        int capacity = courseDatabase.getCapacityFromCode(courseCode);
+
+        if(capacity == occupancy) {
+            throw new IndexOutOfBoundsException();
+        }
+
         if(courseDatabase.getCourseStartTime(courseCode).equals("NA") || courseDatabase.getCourseEndTime(courseCode).equals("NA")){
             SQLiteDatabase database = this.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -127,7 +134,7 @@ public class StudentCourseDatabase extends SQLiteOpenHelper {
 
     }
 
-    public void enrollStudent2(String courseName, String username) throws CourseDoesNotExistException, TimeConflictException, StudentAlreadyEnrolled {
+    public void enrollStudent2(String courseName, String username) throws CourseDoesNotExistException, TimeConflictException, StudentAlreadyEnrolled, IndexOutOfBoundsException {
 
         if(!courseDatabase.courseExists(courseName)){
             throw new CourseDoesNotExistException("Error");
@@ -136,6 +143,15 @@ public class StudentCourseDatabase extends SQLiteOpenHelper {
         if (alreadyEnrolled2(username, courseName)){
             throw new StudentAlreadyEnrolled("Error");
         }
+
+        int occupancy = courseDatabase.getOccupancyFromName(courseName);
+        int capacity = courseDatabase.getCapacityFromName(courseName);
+
+        if(capacity == occupancy) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        System.out.println("capacity " + capacity + " occupancy " + occupancy);
 
         if(courseDatabase.getCourseStartTime2(courseName).equals("NA") || courseDatabase.getCourseEndTime2(courseName).equals("NA")){
             SQLiteDatabase database = this.getWritableDatabase();

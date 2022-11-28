@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class InstructorViewMyCourses extends AppCompatActivity {
 
@@ -60,14 +61,28 @@ public class InstructorViewMyCourses extends AppCompatActivity {
                     capacityTmp = Integer.parseInt(capacity.getText().toString());
                 }
 
-                database.instructorEditCourse(courseCode.getText().toString(), description.getText().toString(), courseDay.getText().toString(), courseStartTime.getText().toString(), courseEndTime.getText().toString(), capacityTmp);
-                viewCourses();
-                Toast.makeText(this, "Course changes have been successfully saved", Toast.LENGTH_SHORT).show();
+                String courseDayProcessed = courseDay.getText().toString().substring(0, 3);
+
+                if(courseDay.length() > 0) {
+                    if(courseDayProcessed.matches("(?i)mon|tue|wed|thu|fri|sat|sun")) {
+                        database.instructorEditCourse(courseCode.getText().toString(), description.getText().toString(), courseDayProcessed, courseStartTime.getText().toString(), courseEndTime.getText().toString(), capacityTmp);
+                        viewCourses();
+                        Toast.makeText(this, "Course changes have been successfully saved", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Enter a valid day of week", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    database.instructorEditCourse(courseCode.getText().toString(), description.getText().toString(), courseDayProcessed, courseStartTime.getText().toString(), courseEndTime.getText().toString(), capacityTmp);
+                    viewCourses();
+                    Toast.makeText(this, "Course changes have been successfully saved", Toast.LENGTH_SHORT).show();
+                }
 
             } catch (CourseDoesNotExistException e){
                 Toast.makeText(this, "Course with that code does not exist", Toast.LENGTH_SHORT).show();
             }catch (NumberFormatException e){
                 Toast.makeText(this, "Capacity should be a positive integer", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+              Toast.makeText(this, "Enter a day of the week/Capacity", Toast.LENGTH_SHORT).show();
             }
 
         });
