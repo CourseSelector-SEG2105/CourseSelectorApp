@@ -217,20 +217,6 @@ public class CourseDatabase extends SQLiteOpenHelper {
         return returnInt;
     }
 
-    public int getOccupancyFromName(String courseName) {
-        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME +" WHERE " + COURSE_NAME + " = '" + courseName + "'", null);
-        int occupancy = cursor.getCount();
-        cursor.close();
-        return occupancy;
-    }
-
-
-    public int getOccupancyFromCode(String courseCode) {
-        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME +" WHERE " + COURSE_CODE + " = '" + courseCode + "'", null);
-        int occupancy = cursor.getCount();
-        cursor.close();
-        return occupancy;
-    }
 
     public void instructorEditCourse(String courseCode, String courseDesc, String courseDay, String courseStartTime, String courseEndTime, int courseCapacity) throws CourseDoesNotExistException, NumberFormatException, Exception{
         if (!courseExists2(courseCode)){

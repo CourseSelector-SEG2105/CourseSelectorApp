@@ -58,6 +58,21 @@ public class StudentCourseDatabase extends SQLiteOpenHelper {
 //        return returnString;
 //    }
 
+    public int getOccupancyFromName(String courseName) {
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME +" WHERE " + COURSE_NAME + " = '" + courseName + "'", null);
+        int occupancy = cursor.getCount();
+        cursor.close();
+        return occupancy;
+    }
+
+
+    public int getOccupancyFromCode(String courseCode) {
+        Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME +" WHERE " + COURSE_CODE + " = '" + courseCode + "'", null);
+        int occupancy = cursor.getCount();
+        cursor.close();
+        return occupancy;
+    }
+
     public Cursor getEnrolledCourses(String username) {
         return this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + STUDENT_NAME + " = '" + username + "'", null);
     }
@@ -99,10 +114,12 @@ public class StudentCourseDatabase extends SQLiteOpenHelper {
             throw new StudentAlreadyEnrolled("Error");
         }
 
-        int occupancy = courseDatabase.getOccupancyFromCode(courseCode);
+        int occupancy = getOccupancyFromCode(courseCode);
         int capacity = courseDatabase.getCapacityFromCode(courseCode);
 
-        if(capacity == occupancy) {
+        System.out.println(occupancy + " " + capacity);
+
+        if(occupancy >= capacity) {
             throw new IndexOutOfBoundsException();
         }
 
@@ -144,14 +161,14 @@ public class StudentCourseDatabase extends SQLiteOpenHelper {
             throw new StudentAlreadyEnrolled("Error");
         }
 
-        int occupancy = courseDatabase.getOccupancyFromName(courseName);
+        int occupancy = getOccupancyFromName(courseName);
         int capacity = courseDatabase.getCapacityFromName(courseName);
 
-        if(capacity == occupancy) {
+        System.out.println(occupancy + " " + capacity);
+
+        if(occupancy >= capacity) {
             throw new IndexOutOfBoundsException();
         }
-
-        System.out.println("capacity " + capacity + " occupancy " + occupancy);
 
         if(courseDatabase.getCourseStartTime2(courseName).equals("NA") || courseDatabase.getCourseEndTime2(courseName).equals("NA")){
             SQLiteDatabase database = this.getWritableDatabase();
